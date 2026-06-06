@@ -1,0 +1,28 @@
+services:
+  notification-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: solara_notification_service
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${NOTIFICATION_INSTANCE_PORT:-4001}:4001"
+    depends_on:
+      - redis
+    networks:
+      - solara_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: solara_notification_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - solara_network
+
+networks:
+  solara_network:
+    driver: bridge
