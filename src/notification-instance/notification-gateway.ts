@@ -27,6 +27,7 @@ type AuthenticatedSocket = Socket & {
 };
 
 @WebSocketGateway({
+  path: '/ws/notifications/',
   cors: {
     origin: process.env.NOTIFICATION_INSTANCE_CORS_ORIGIN ?? true,
     credentials: true,
@@ -36,8 +37,7 @@ type AuthenticatedSocket = Socket & {
   pingTimeout: 30000,
 })
 export class NotificationGateway
-  implements OnGatewayConnection, OnGatewayDisconnect
-{
+  implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger(NotificationGateway.name);
 
   @WebSocketServer()
@@ -46,7 +46,7 @@ export class NotificationGateway
   constructor(
     private readonly authService: NotificationAuthService,
     private readonly registry: NotificationConnectionRegistryService,
-  ) {}
+  ) { }
 
   handleConnection(socket: AuthenticatedSocket): void {
     console.log('sdsd');
